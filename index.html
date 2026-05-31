@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedInk – Your Trusted Medical Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1a56e8;
+      --blue-dark: #0f3aad;
+      --blue-light: #e8f0fd;
+      --teal: #00c4b4;
+      --white: #ffffff;
+      --off-white: #f5f8ff;
+      --text: #0d1f3c;
+      --text-muted: #6b7a99;
+      --card-shadow: 0 8px 40px rgba(26,86,232,0.10);
+      --radius: 18px;
+      --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--off-white);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #e8f0fd; }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
+
+    /* ─── HEADER ─── */
+    header {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(26,86,232,0.10);
+      padding: 0 6%;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+      transition: box-shadow var(--transition);
+    }
+    header.scrolled { box-shadow: 0 4px 30px rgba(26,86,232,0.12); }
+
+    .logo {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.6rem; font-weight: 800;
+      color: var(--blue);
+      letter-spacing: -0.5px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .logo span { color: var(--teal); }
+    .logo-icon {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 1rem;
+    }
+
+    nav ul { list-style: none; display: flex; gap: 6px; }
+    nav ul li a {
+      text-decoration: none; color: var(--text);
+      font-weight: 500; font-size: 0.95rem;
+      padding: 8px 14px; border-radius: 10px;
+      transition: background var(--transition), color var(--transition);
+    }
+    nav ul li a:hover { background: var(--blue-light); color: var(--blue); }
+
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+
+    .cart-btn {
+      position: relative;
+      background: var(--blue); color: white;
+      border: none; padding: 9px 18px; border-radius: 12px;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
+      cursor: pointer; display: flex; align-items: center; gap: 7px;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .cart-btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .cart-badge {
+      position: absolute; top: -7px; right: -7px;
+      background: var(--teal); color: white;
+      border-radius: 50%; width: 20px; height: 20px;
+      font-size: 0.7rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid white;
+      transition: transform 0.3s;
+    }
+    .cart-badge.bump { animation: bump 0.3s ease; }
+    @keyframes bump { 0%,100%{transform:scale(1)} 50%{transform:scale(1.5)} }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: var(--transition); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: calc(100vh - 68px);
+      padding: 60px 6%;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 40px;
+      background: linear-gradient(135deg, #f0f5ff 0%, #e8f7f5 100%);
+      position: relative; overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; top: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(26,86,232,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -80px; left: 10%;
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(0,196,180,0.10) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-text { position: relative; z-index: 2; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--blue-light); color: var(--blue);
+      border-radius: 30px; padding: 6px 16px;
+      font-size: 0.82rem; font-weight: 600;
+      margin-bottom: 22px;
+      animation: fadeSlideUp 0.6s ease forwards;
+    }
+    .badge-dot { width: 8px; height: 8px; background: var(--teal); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+
+    .hero-text h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 800; line-height: 1.12;
+      color: var(--text); letter-spacing: -1px;
+      margin-bottom: 18px;
+      animation: fadeSlideUp 0.7s 0.1s ease both;
+    }
+    .hero-text h1 em { font-style: normal; color: var(--blue); }
+
+    .hero-text p {
+      font-size: 1.08rem; color: var(--text-muted);
+      line-height: 1.75; max-width: 440px;
+      margin-bottom: 32px;
+      animation: fadeSlideUp 0.7s 0.2s ease both;
+    }
+
+    .hero-cta {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      animation: fadeSlideUp 0.7s 0.3s ease both;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+      color: white; border: none;
+      padding: 14px 28px; border-radius: 14px;
+      font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 9px;
+      box-shadow: 0 8px 24px rgba(26,86,232,0.35);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(26,86,232,0.4); }
+
+    .btn-secondary {
+      background: white; color: var(--blue);
+      border: 2px solid rgba(26,86,232,0.2);
+      padding: 13px 26px; border-radius: 14px;
+      font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 9px;
+      transition: background var(--transition), border-color var(--transition), transform var(--transition);
+    }
+    .btn-secondary:hover { background: var(--blue-light); border-color: var(--blue); transform: translateY(-2px); }
+
+    .hero-stats {
+      display: flex; gap: 32px; margin-top: 40px;
+      animation: fadeSlideUp 0.7s 0.4s ease both;
+    }
+    .stat { text-align: left; }
+    .stat-num { font-family: 'Sora', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--blue); line-height: 1; }
+    .stat-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+
+    .hero-image-wrap {
+      position: relative; z-index: 2;
+      animation: fadeSlideUp 0.9s 0.2s ease both;
+    }
+    .hero-image-wrap img {
+      width: 100%; border-radius: 24px;
+      box-shadow: 0 30px 80px rgba(26,86,232,0.2);
+      display: block;
+    }
+    .hero-float-card {
+      position: absolute; background: white;
+      border-radius: 16px; padding: 14px 18px;
+      box-shadow: var(--card-shadow);
+      display: flex; align-items: center; gap: 12px;
+      animation: float 4s ease-in-out infinite;
+    }
+    .hero-float-card.card1 { bottom: -20px; left: -20px; }
+    .hero-float-card.card2 { top: 20px; right: -20px; animation-delay: -2s; }
+    .float-icon { font-size: 1.6rem; }
+    .float-text strong { display: block; font-size: 0.92rem; font-weight: 700; color: var(--text); }
+    .float-text span { font-size: 0.78rem; color: var(--text-muted); }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+    @keyframes fadeSlideUp {
+      from { opacity:0; transform:translateY(24px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+
+    /* ─── SEARCH BAR ─── */
+    .search-section {
+      padding: 40px 6% 0;
+      display: flex; justify-content: center;
+    }
+    .search-wrap {
+      width: 100%; max-width: 700px;
+      background: white; border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      display: flex; align-items: center;
+      padding: 8px 8px 8px 20px;
+      border: 2px solid transparent;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .search-wrap:focus-within {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(26,86,232,0.12);
+    }
+    .search-icon { color: var(--text-muted); font-size: 1.2rem; margin-right: 10px; }
+    .search-wrap input {
+      flex: 1; border: none; outline: none;
+      font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--text);
+      background: transparent;
+    }
+    .search-wrap input::placeholder { color: var(--text-muted); }
+    .search-btn {
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      color: white; border: none;
+      padding: 11px 22px; border-radius: 14px;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.95rem;
+      cursor: pointer;
+      transition: opacity var(--transition), transform var(--transition);
+    }
+    .search-btn:hover { opacity: 0.9; transform: scale(1.02); }
+
+    /* ─── CATEGORIES ─── */
+    .categories {
+      padding: 50px 6% 20px;
+    }
+    .section-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
+    }
+    .section-header h2 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800; color: var(--text); letter-spacing: -0.5px;
+    }
+    .section-header h2 span { color: var(--blue); }
+    .see-all {
+      background: none; border: 2px solid rgba(26,86,232,0.2);
+      color: var(--blue); padding: 8px 18px; border-radius: 10px;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
+      cursor: pointer; transition: background var(--transition);
+    }
+    .see-all:hover { background: var(--blue-light); }
+
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+    }
+    .cat-card {
+      background: white; border-radius: var(--radius);
+      padding: 24px 16px; text-align: center;
+      box-shadow: 0 2px 16px rgba(26,86,232,0.07);
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+      border: 2px solid transparent;
+    }
+    .cat-card:hover { transform: translateY(-5px); box-shadow: var(--card-shadow); border-color: var(--blue-light); }
+    .cat-card.active { border-color: var(--blue); background: var(--blue-light); }
+    .cat-icon { font-size: 2.2rem; margin-bottom: 10px; display: block; }
+    .cat-card h4 { font-family: 'Sora', sans-serif; font-size: 0.88rem; font-weight: 700; color: var(--text); }
+    .cat-card p { font-size: 0.76rem; color: var(--text-muted); margin-top: 3px; }
+
+    /* ─── MEDICINES ─── */
+    .medicines-section { padding: 40px 6%; }
+
+    .filter-row {
+      display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap;
+    }
+    .filter-chip {
+      background: white; border: 2px solid rgba(26,86,232,0.15);
+      color: var(--text-muted); padding: 7px 18px; border-radius: 50px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500;
+      cursor: pointer; transition: all var(--transition);
+    }
+    .filter-chip.active, .filter-chip:hover {
+      background: var(--blue); color: white; border-color: var(--blue);
+    }
+
+    .med-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 22px;
+    }
+
+    .med-card {
+      background: white; border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(26,86,232,0.07);
+      transition: transform var(--transition), box-shadow var(--transition);
+      border: 1px solid rgba(26,86,232,0.06);
+      opacity: 0; transform: translateY(20px);
+      animation: fadeSlideUp 0.5s ease forwards;
+    }
+    .med-card:hover { transform: translateY(-6px); box-shadow: var(--card-shadow); }
+
+    .med-card-top {
+      height: 140px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+      position: relative;
+    }
+    .med-badge {
+      position: absolute; top: 12px; right: 12px;
+      background: var(--teal); color: white;
+      font-size: 0.7rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 30px;
+    }
+    .med-badge.offer { background: #ff6b6b; }
+
+    .med-card-body { padding: 18px; }
+    .med-card-body h3 {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.05rem; font-weight: 700; color: var(--text);
+      margin-bottom: 5px;
+    }
+    .med-card-body p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px; }
+    .med-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .med-price { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--blue); }
+    .med-price .old { font-size: 0.8rem; font-weight: 400; color: var(--text-muted); text-decoration: line-through; margin-left: 6px; }
+
+    .add-btn {
+      background: var(--blue-light); color: var(--blue);
+      border: none; padding: 9px 16px; border-radius: 10px;
+      font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.88rem;
+      cursor: pointer; display: flex; align-items: center; gap: 6px;
+      transition: background var(--transition), color var(--transition), transform var(--transition);
+    }
+    .add-btn:hover { background: var(--blue); color: white; transform: scale(1.05); }
+    .add-btn.added { background: #e6faf8; color: var(--teal); }
+
+    /* ─── FEATURES BANNER ─── */
+    .features {
+      margin: 20px 6% 40px;
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+      border-radius: 28px;
+      padding: 40px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      color: white;
+      position: relative; overflow: hidden;
+    }
+    .features::before {
+      content: '';
+      position: absolute; top: -50px; right: -50px;
+      width: 250px; height: 250px;
+      background: rgba(255,255,255,0.06); border-radius: 50%;
+    }
+    .feature-item { position: relative; z-index: 1; }
+    .feature-item .feat-icon { font-size: 2.4rem; margin-bottom: 14px; display: block; }
+    .feature-item h4 { font-family: 'Sora', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+    .feature-item p { font-size: 0.85rem; opacity: 0.8; line-height: 1.55; }
+
+    /* ─── ABOUT ─── */
+    .about-section {
+      padding: 60px 6%;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+    }
+    .about-img-wrap { position: relative; }
+    .about-img-wrap img { width: 100%; border-radius: 24px; box-shadow: var(--card-shadow); }
+    .about-accent {
+      position: absolute; bottom: -16px; right: -16px;
+      width: 120px; height: 120px;
+      background: linear-gradient(135deg, var(--teal), var(--blue));
+      border-radius: 20px; z-index: -1;
+    }
+
+    .about-text h2 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 800; color: var(--text); letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+    .about-text h2 span { color: var(--blue); }
+    .about-text p { color: var(--text-muted); line-height: 1.8; margin-bottom: 18px; font-size: 1.02rem; }
+
+    .check-list { list-style: none; margin-bottom: 30px; }
+    .check-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      margin-bottom: 12px; font-size: 0.95rem; color: var(--text);
+    }
+    .check-list li::before {
+      content: '✓'; font-weight: 800; color: var(--teal);
+      background: #e6faf8; width: 24px; height: 24px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials { padding: 60px 6%; background: white; }
+    .testimonials .section-header { margin-bottom: 36px; }
+
+    .review-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+    }
+    .review-card {
+      background: var(--off-white); border-radius: var(--radius);
+      padding: 26px; border: 1px solid rgba(26,86,232,0.08);
+      transition: transform var(--transition);
+    }
+    .review-card:hover { transform: translateY(-4px); }
+    .stars { color: #f5a623; font-size: 1rem; letter-spacing: 2px; margin-bottom: 12px; }
+    .review-text { font-size: 0.95rem; color: var(--text); line-height: 1.7; margin-bottom: 18px; font-style: italic; }
+    .reviewer { display: flex; align-items: center; gap: 12px; }
+    .reviewer-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 1rem; font-family: 'Sora', sans-serif;
+    }
+    .reviewer-info strong { display: block; font-size: 0.92rem; font-weight: 700; color: var(--text); }
+    .reviewer-info span { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* ─── CONTACT ─── */
+    .contact-section {
+      padding: 60px 6%;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    }
+    .contact-info h2 {
+      font-family: 'Sora', sans-serif; font-size: 2rem;
+      font-weight: 800; color: var(--text); margin-bottom: 16px; letter-spacing: -0.5px;
+    }
+    .contact-info p { color: var(--text-muted); line-height: 1.75; margin-bottom: 28px; }
+    .contact-item {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 18px;
+    }
+    .contact-icon {
+      width: 46px; height: 46px; border-radius: 14px;
+      background: var(--blue-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .contact-item strong { display: block; font-size: 0.9rem; font-weight: 700; color: var(--text); }
+    .contact-item span { font-size: 0.85rem; color: var(--text-muted); }
+
+    .contact-form {
+      background: white; border-radius: var(--radius);
+      padding: 34px; box-shadow: var(--card-shadow);
+    }
+    .contact-form h3 { font-family: 'Sora', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 22px; color: var(--text); }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 0.87rem; font-weight: 600; color: var(--text); margin-bottom: 7px; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; border: 2px solid rgba(26,86,232,0.12);
+      border-radius: 12px; padding: 11px 16px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--text);
+      background: var(--off-white); outline: none;
+      transition: border-color var(--transition);
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      border-color: var(--blue); background: white;
+    }
+    .form-group textarea { height: 100px; resize: vertical; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      color: white; border: none; padding: 14px;
+      border-radius: 12px; font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      transition: opacity var(--transition), transform var(--transition);
+    }
+    .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--text);
+      color: rgba(255,255,255,0.7);
+      padding: 50px 6% 24px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px; margin-bottom: 40px;
+    }
+    .footer-brand .logo { color: white; margin-bottom: 14px; }
+    .footer-brand .logo span { color: var(--teal); }
+    .footer-brand p { font-size: 0.88rem; line-height: 1.7; color: rgba(255,255,255,0.55); max-width: 240px; }
+    .footer-col h5 { font-family: 'Sora', sans-serif; font-weight: 700; color: white; margin-bottom: 16px; font-size: 0.95rem; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 9px; }
+    .footer-col ul li a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.87rem; transition: color var(--transition); }
+    .footer-col ul li a:hover { color: var(--teal); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 22px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.84rem; flex-wrap: wrap; gap: 10px;
+    }
+    .footer-bottom span { color: var(--teal); }
+
+    /* ─── CART MODAL ─── */
+    .cart-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+      z-index: 2000; opacity: 0; pointer-events: none;
+      transition: opacity var(--transition);
+      backdrop-filter: blur(4px);
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+    .cart-drawer {
+      position: fixed; right: 0; top: 0; bottom: 0;
+      width: 380px; max-width: 95vw;
+      background: white; z-index: 2001;
+      transform: translateX(100%);
+      transition: transform var(--transition);
+      padding: 28px; overflow-y: auto; display: flex; flex-direction: column;
+      box-shadow: -20px 0 60px rgba(0,0,0,0.15);
+    }
+    .cart-drawer.open { transform: translateX(0); }
+    .cart-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .cart-head h3 { font-family: 'Sora', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--text); }
+    .close-btn {
+      background: var(--off-white); border: none; width: 38px; height: 38px;
+      border-radius: 10px; cursor: pointer; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--transition);
+    }
+    .close-btn:hover { background: var(--blue-light); }
+    .cart-items { flex: 1; }
+    .cart-item {
+      display: flex; gap: 14px; padding: 14px 0;
+      border-bottom: 1px solid rgba(26,86,232,0.08);
+      align-items: center;
+    }
+    .cart-item-icon { font-size: 2.2rem; background: var(--off-white); width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cart-item-info { flex: 1; }
+    .cart-item-info strong { display: block; font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .cart-item-info span { font-size: 0.82rem; color: var(--text-muted); }
+    .cart-item-price { font-family: 'Sora', sans-serif; font-weight: 800; color: var(--blue); font-size: 1rem; }
+    .cart-remove { background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 1.1rem; padding: 4px; border-radius: 6px; transition: background var(--transition); }
+    .cart-remove:hover { background: #fff0f0; }
+    .cart-empty { text-align: center; padding: 60px 0; color: var(--text-muted); }
+    .cart-empty div { font-size: 3.5rem; margin-bottom: 14px; }
+    .cart-footer { border-top: 2px solid rgba(26,86,232,0.1); padding-top: 20px; margin-top: 10px; }
+    .cart-total { display: flex; justify-content: space-between; margin-bottom: 16px; font-family: 'Sora', sans-serif; }
+    .cart-total span { font-size: 1rem; color: var(--text-muted; }
+    .cart-total strong { font-size: 1.3rem; font-weight: 800; color: var(--text); }
+    .checkout-btn {
+      width: 100%; padding: 15px;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      color: white; border: none; border-radius: 14px;
+      font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: opacity var(--transition);
+    }
+    .checkout-btn:hover { opacity: 0.9; }
+
+    /* ─── TOAST ─── */
+    .toast {
+      position: fixed; bottom: 30px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text); color: white;
+      padding: 12px 22px; border-radius: 14px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      z-index: 3000; display: flex; align-items: center; gap: 10px;
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast-icon { font-size: 1.1rem; }
+
+    /* ─── MOBILE NAV ─── */
+    .mobile-nav {
+      position: fixed; top: 68px; left: 0; right: 0;
+      background: white; border-bottom: 1px solid rgba(26,86,232,0.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      z-index: 999; padding: 14px 6%;
+      transform: translateY(-100%); opacity: 0; pointer-events: none;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+    .mobile-nav.open { transform: translateY(0); opacity: 1; pointer-events: all; }
+    .mobile-nav ul { list-style: none; }
+    .mobile-nav ul li { border-bottom: 1px solid rgba(26,86,232,0.06); }
+    .mobile-nav ul li a { display: block; padding: 13px 0; color: var(--text); text-decoration: none; font-weight: 500; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; text-align: center; min-height: auto; padding: 50px 6%; }
+      .hero-text p { margin: 0 auto 28px; }
+      .hero-cta { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      .hero-image-wrap { max-width: 480px; margin: 0 auto; }
+      .about-section { grid-template-columns: 1fr; }
+      .contact-section { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      nav { display: none; }
+      .hamburger { display: flex; }
+      .hero-float-card.card2 { right: 0; }
+    }
+
+    @media (max-width: 560px) {
+      .footer-top { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .features { padding: 28px; }
+      .hero-float-card { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header id="mainHeader">
+    <div class="logo">
+      <div class="logo-icon">✚</div>
+      Med<span>Ink</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#medicines">Medicines</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="cart-btn" onclick="toggleCart()">
+        🛒 Cart
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <div class="hamburger" id="hamburger" onclick="toggleMobileNav()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV -->
+  <div class="mobile-nav" id="mobileNav">
+    <ul>
+      <li><a href="#home" onclick="toggleMobileNav()">Home</a></li>
+      <li><a href="#medicines" onclick="toggleMobileNav()">Medicines</a></li>
+      <li><a href="#about" onclick="toggleMobileNav()">About</a></li>
+      <li><a href="#contact" onclick="toggleMobileNav()">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-text">
+      <div class="hero-badge">
+        <div class="badge-dot"></div>
+        Now delivering in Gumla & Jharkhand
+      </div>
+      <h1>Your Trusted <em>Medical</em> Partner</h1>
+      <p>Quality medicines, healthcare essentials, and expert guidance — delivered to your doorstep with care and speed.</p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="document.getElementById('medicines').scrollIntoView({behavior:'smooth'})">
+          🛍️ Shop Now
+        </button>
+        <button class="btn-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+          📞 Contact Us
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">5K+</div>
+          <div class="stat-label">Happy Customers</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">200+</div>
+          <div class="stat-label">Products</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">24/7</div>
+          <div class="stat-label">Support</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-image-wrap">
+      <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=900&auto=format&fit=crop" alt="Medical Shop">
+      <div class="hero-float-card card1">
+        <div class="float-icon">✅</div>
+        <div class="float-text">
+          <strong>Verified Medicines</strong>
+          <span>Licensed & Certified</span>
+        </div>
+      </div>
+      <div class="hero-float-card card2">
+        <div class="float-icon">🚀</div>
+        <div class="float-text">
+          <strong>Fast Delivery</strong>
+          <span>Same-day in Gumla</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEARCH -->
+  <div class="search-section">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search for medicines, vitamins, first aid..." oninput="filterMedicines()">
+      <button class="search-btn" onclick="filterMedicines()">Search</button>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <section class="categories">
+    <div class="section-header">
+      <h2>Shop by <span>Category</span></h2>
+      <button class="see-all">See All →</button>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card active" onclick="filterByCategory('all', this)">
+        <span class="cat-icon">💊</span>
+        <h4>All Products</h4>
+        <p>12 items</p>
+      </div>
+      <div class="cat-card" onclick="filterByCategory('pain', this)">
+        <span class="cat-icon">🩹</span>
+        <h4>Pain Relief</h4>
+        <p>3 items</p>
+      </div>
+      <div class="cat-card" onclick="filterByCategory('vitamins', this)">
+        <span class="cat-icon">🌿</span>
+        <h4>Vitamins</h4>
+        <p>3 items</p>
+      </div>
+      <div class="cat-card" onclick="filterByCategory('cold', this)">
+        <span class="cat-icon">🤧</span>
+        <h4>Cold & Flu</h4>
+        <p>2 items</p>
+      </div>
+      <div class="cat-card" onclick="filterByCategory('firstaid', this)">
+        <span class="cat-icon">🏥</span>
+        <h4>First Aid</h4>
+        <p>2 items</p>
+      </div>
+      <div class="cat-card" onclick="filterByCategory('digestive', this)">
+        <span class="cat-icon">🫁</span>
+        <h4>Digestive</h4>
+        <p>2 items</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEDICINES -->
+  <section class="medicines-section" id="medicines">
+    <div class="section-header">
+      <h2>Popular <span>Medicines</span></h2>
+    </div>
+    <div class="filter-row">
+      <button class="filter-chip active" onclick="filterChip('all',this)">All</button>
+      <button class="filter-chip" onclick="filterChip('bestseller',this)">⭐ Best Sellers</button>
+      <button class="filter-chip" onclick="filterChip('offer',this)">🏷️ On Offer</button>
+      <button class="filter-chip" onclick="filterChip('new',this)">✨ New</button>
+    </div>
+    <div class="med-grid" id="medGrid"></div>
+  </section>
+
+  <!-- FEATURES BANNER -->
+  <div class="features">
+    <div class="feature-item">
+      <span class="feat-icon">🚚</span>
+      <h4>Free Delivery</h4>
+      <p>Free same-day delivery on orders above ₹299 in Gumla.</p>
+    </div>
+    <div class="feature-item">
+      <span class="feat-icon">🔒</span>
+      <h4>100% Genuine</h4>
+      <p>All medicines are sourced from licensed manufacturers.</p>
+    </div>
+    <div class="feature-item">
+      <span class="feat-icon">💬</span>
+      <h4>Expert Advice</h4>
+      <p>Consult our certified pharmacists before you buy.</p>
+    </div>
+    <div class="feature-item">
+      <span class="feat-icon">↩️</span>
+      <h4>Easy Returns</h4>
+      <p>Hassle-free returns and refunds within 7 days.</p>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about-section" id="about">
+    <div class="about-img-wrap">
+      <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=700&auto=format&fit=crop" alt="About MedInk">
+      <div class="about-accent"></div>
+    </div>
+    <div class="about-text">
+      <h2>Why Choose <span>MedInk?</span></h2>
+      <p>MedInk has been a trusted name in healthcare for families across Gumla, Jharkhand. We go beyond just selling medicines — we care about your wellbeing.</p>
+      <ul class="check-list">
+        <li>Licensed pharmacist on-site at all times</li>
+        <li>Over 200 products from trusted brands</li>
+        <li>Affordable prices with no hidden charges</li>
+        <li>Fast, discreet, and safe home delivery</li>
+        <li>Prescription management and reminders</li>
+      </ul>
+      <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+        📞 Get in Touch
+      </button>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="section-header">
+      <h2>What Our <span>Customers Say</span></h2>
+    </div>
+    <div class="review-grid">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"MedInk saved me so much time. I ordered medicines in the morning and they arrived before noon. Incredible service!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">R</div>
+          <div class="reviewer-info">
+            <strong>Ravi Kumar</strong>
+            <span>Gumla, Jharkhand</span>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Very genuine medicines at great prices. The pharmacist gave me proper guidance on dosage. Highly recommended!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">P</div>
+          <div class="reviewer-info">
+            <strong>Priya Singh</strong>
+            <span>Jharkhand</span>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★☆</div>
+        <p class="review-text">"Great variety of products and the website is super easy to use. Will definitely order again next month."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">A</div>
+          <div class="reviewer-info">
+            <strong>Amit Sharma</strong>
+            <span>Jharkhand</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="contact-info">
+      <h2>Get In Touch</h2>
+      <p>Have questions about medicines or need help with your order? Reach out — our team is ready to help.</p>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <strong>Our Location</strong>
+          <span>Gumla, Jharkhand, India</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <strong>Phone</strong>
+          <span>+91 7764 *** ***</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <strong>Email</strong>
+          <span>medink@email.com</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">⏰</div>
+        <div>
+          <strong>Store Hours</strong>
+          <span>Mon–Sat: 8AM – 9PM | Sun: 9AM – 6PM</span>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <h3>Send us a Message</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Ravi">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Kumar">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@email.com">
+      </div>
+      <div class="form-group">
+        <label>Subject</label>
+        <select>
+          <option>Medicine Inquiry</option>
+          <option>Order Issue</option>
+          <option>Delivery Query</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Tell us how we can help..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="handleFormSubmit()">Send Message 🚀</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo" style="margin-bottom:12px">✚ Med<span>Ink</span></div>
+        <p>Your trusted medical shop in Gumla, Jharkhand. Quality medicines, fast delivery, expert care.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#medicines">Medicines</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Categories</h5>
+        <ul>
+          <li><a href="#">Pain Relief</a></li>
+          <li><a href="#">Vitamins</a></li>
+          <li><a href="#">Cold & Flu</a></li>
+          <li><a href="#">First Aid</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Policies</h5>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Return Policy</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 MedInk. All Rights Reserved.</span>
+      <span>Made with ❤️ in <span style="color:var(--teal)">Jharkhand, India</span></span>
+    </div>
+  </footer>
+
+  <!-- CART OVERLAY -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-head">
+      <h3>🛒 Your Cart</h3>
+      <button class="close-btn" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Total</span>
+        <strong id="cartTotal">₹0</strong>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">Proceed to Checkout →</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <span class="toast-icon">✅</span>
+    <span id="toastMsg">Added to cart!</span>
+  </div>
+
+  <script>
+    // ─── PRODUCT DATA ───
+    const allProducts = [
+      { id:1, name:'Paracetamol 500mg', desc:'Fast relief from fever and mild to moderate pain.', price:49, old:65, icon:'💊', category:'pain', tag:'bestseller', bg:'#fef3f0' },
+      { id:2, name:'Cough Syrup', desc:'Soothes throat & relieves persistent cough and cold.', price:89, old:110, icon:'🧴', category:'cold', tag:'bestseller', bg:'#f0f8ff' },
+      { id:3, name:'Vitamin C Tablets', desc:'Boosts immunity and promotes healthy skin.', price:129, old:160, icon:'🌿', category:'vitamins', tag:'offer', bg:'#f0fff5' },
+      { id:4, name:'First Aid Kit', desc:'Complete emergency kit for home and travel.', price:399, old:499, icon:'🏥', category:'firstaid', tag:'bestseller', bg:'#fff0f0' },
+      { id:5, name:'Ibuprofen 400mg', desc:'Anti-inflammatory for pain, swelling, and fever.', price:69, old:85, icon:'💉', category:'pain', tag:'new', bg:'#fdf0ff' },
+      { id:6, name:'Vitamin D3', desc:'Supports bone health, muscle function, and immunity.', price:199, old:249, icon:'☀️', category:'vitamins', tag:'offer', bg:'#fffbf0' },
+      { id:7, name:'Antacid Tablets', desc:'Instant relief from acidity and heartburn.', price:55, old:70, icon:'🫁', category:'digestive', tag:'bestseller', bg:'#f0faff' },
+      { id:8, name:'Cold Relief Capsules', desc:'Multi-symptom cold and flu relief in one capsule.', price:119, old:145, icon:'🤧', category:'cold', tag:'new', bg:'#f5f0ff' },
+      { id:9, name:'Bandage Roll', desc:'Flexible, breathable bandage for wound care.', price:35, old:45, icon:'🩹', category:'firstaid', tag:'new', bg:'#fff5f0' },
+      { id:10, name:'Multivitamin', desc:'Daily essential vitamins and minerals for all ages.', price:249, old:310, icon:'💊', category:'vitamins', tag:'offer', bg:'#f0fff8' },
+      { id:11, name:'Aspirin 75mg', desc:'Heart health and mild pain management.', price:45, old:60, icon:'❤️', category:'pain', tag:'bestseller', bg:'#fff0f5' },
+      { id:12, name:'Probiotics', desc:'Promotes healthy gut flora and digestion.', price:299, old:380, icon:'🦠', category:'digestive', tag:'new', bg:'#f0f5ff' },
+    ];
+
+    let cart = [];
+    let activeFilter = 'all';
+    let activeChip = 'all';
+    let searchTerm = '';
+
+    // ─── RENDER MEDICINES ───
+    function renderMedicines() {
+      const grid = document.getElementById('medGrid');
+      let filtered = allProducts.filter(p => {
+        const matchCat = activeFilter === 'all' || p.category === activeFilter;
+        const matchChip = activeChip === 'all' || p.tag === activeChip;
+        const matchSearch = p.name.toLowerCase().includes(searchTerm) || p.desc.toLowerCase().includes(searchTerm);
+        return matchCat && matchChip && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--text-muted);font-size:1.1rem">
+          <div style="font-size:3rem;margin-bottom:12px">🔍</div> No products found.
+        </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map((p, i) => `
+        <div class="med-card" style="animation-delay:${i*0.07}s">
+          <div class="med-card-top" style="background:${p.bg}">
+            ${p.icon}
+            ${p.tag === 'offer' ? '<span class="med-badge offer">OFFER</span>' :
+              p.tag === 'new' ? '<span class="med-badge">NEW</span>' :
+              '<span class="med-badge" style="background:#f5a623">⭐ TOP</span>'}
+          </div>
+          <div class="med-card-body">
+            <h3>${p.name}</h3>
+            <p>${p.desc}</p>
+            <div class="med-card-footer">
+              <div class="med-price">
+                ₹${p.price}
+                <span class="old">₹${p.old}</span>
+              </div>
+              <button class="add-btn" id="btn-${p.id}" onclick="addToCart(${p.id})">
+                + Add
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterByCategory(cat, el) {
+      activeFilter = cat;
+      document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      renderMedicines();
+    }
+
+    function filterChip(chip, el) {
+      activeChip = chip;
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      renderMedicines();
+    }
+
+    function filterMedicines() {
+      searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      renderMedicines();
+    }
+
+    // ─── CART ───
+    function addToCart(id) {
+      const product = allProducts.find(p => p.id === id);
+      const existing = cart.find(c => c.id === id);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+      updateCartUI();
+      const btn = document.getElementById(`btn-${id}`);
+      if (btn) { btn.classList.add('added'); btn.textContent = '✓ Added'; setTimeout(() => { btn.classList.remove('added'); btn.innerHTML = '+ Add'; }, 1500); }
+      showToast(`${product.name} added to cart!`);
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(c => c.id !== id);
+      updateCartUI();
+      renderCart();
+    }
+
+    function updateCartUI() {
+      const total = cart.reduce((s, c) => s + c.qty, 0);
+      const badge = document.getElementById('cartBadge');
+      badge.textContent = total;
+      badge.classList.add('bump');
+      setTimeout(() => badge.classList.remove('bump'), 300);
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartItems');
+      const footer = document.getElementById('cartFooter');
+      if (cart.length === 0) {
+        container.innerHTML = `<div class="cart-empty"><div>🛒</div><p>Your cart is empty</p></div>`;
+        footer.style.display = 'none';
+        return;
+      }
+      footer.style.display = 'block';
+      container.innerHTML = cart.map(c => `
+        <div class="cart-item">
+          <div class="cart-item-icon">${c.icon}</div>
+          <div class="cart-item-info">
+            <strong>${c.name}</strong>
+            <span>Qty: ${c.qty} × ₹${c.price}</span>
+          </div>
+          <div class="cart-item-price">₹${c.qty * c.price}</div>
+          <button class="cart-remove" onclick="removeFromCart(${c.id})">🗑</button>
+        </div>
+      `).join('');
+      const grandTotal = cart.reduce((s, c) => s + c.price * c.qty, 0);
+      document.getElementById('cartTotal').textContent = `₹${grandTotal}`;
+    }
+
+    function toggleCart() {
+      const overlay = document.getElementById('cartOverlay');
+      const drawer = document.getElementById('cartDrawer');
+      overlay.classList.toggle('open');
+      drawer.classList.toggle('open');
+      if (drawer.classList.contains('open')) renderCart();
+    }
+
+    function checkout() {
+      toggleCart();
+      cart = [];
+      updateCartUI();
+      showToast('🎉 Order placed successfully! Thank you!');
+    }
+
+    // ─── TOAST ───
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
+    }
+
+    // ─── MOBILE NAV ───
+    function toggleMobileNav() {
+      document.getElementById('mobileNav').classList.toggle('open');
+    }
+
+    // ─── HEADER SCROLL ───
+    window.addEventListener('scroll', () => {
+      document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // ─── FORM ───
+    function handleFormSubmit() {
+      showToast('✉️ Message sent! We\'ll reply within 24 hours.');
+    }
+
+    // ─── INIT ───
+    renderMedicines();
+  </script>
+</body>
+</html>
